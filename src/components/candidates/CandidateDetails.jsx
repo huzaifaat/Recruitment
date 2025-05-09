@@ -4,9 +4,9 @@ import { useState } from 'react';
 import Card from '../ui/Card';
 import Button from '../ui/Button';
 import ProgressBar from '../ui/ProgressBar';
-import { Phone, Mail, MapPin, BookOpen, Briefcase, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, BookOpen, Briefcase, CheckCircle, Send } from 'lucide-react';
 
-export default function CandidateDetails({ candidate, onUpdateCandidate }) {
+export default function CandidateDetails({ candidate, onUpdateCandidate, jobTitle, onSendEmail }) {
   const [notes, setNotes] = useState(candidate.notes);
   const [isContacting, setIsContacting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,14 +54,33 @@ export default function CandidateDetails({ candidate, onUpdateCandidate }) {
           
           <div className="mt-4 sm:mt-0 flex gap-2">
             {candidate.contacted ? (
-              <Button
-                variant={candidate.selected ? 'secondary' : 'outline'}
-                onClick={handleSelectCandidate}
-                className="flex items-center"
-              >
-                <CheckCircle size={18} className="mr-2" />
-                {candidate.selected ? 'Selected' : 'Select Candidate'}
-              </Button>
+              <>
+                <Button
+                  variant={candidate.selected ? 'secondary' : 'outline'}
+                  onClick={handleSelectCandidate}
+                  className="flex items-center"
+                >
+                  <CheckCircle size={18} className="mr-2" />
+                  {candidate.selected ? 'Selected' : 'Select Candidate'}
+                </Button>
+                
+                {candidate.selected && !candidate.emailSent && (
+                  <Button
+                    onClick={onSendEmail}
+                    className="flex items-center"
+                  >
+                    <Send size={18} className="mr-2" />
+                    Send Interview Invite
+                  </Button>
+                )}
+                
+                {candidate.emailSent && (
+                  <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-green-800 bg-green-100 rounded-full">
+                    <CheckCircle size={16} className="mr-1" />
+                    Email Sent
+                  </span>
+                )}
+              </>
             ) : (
               <Button onClick={handleContactCandidate}>
                 Contact Candidate

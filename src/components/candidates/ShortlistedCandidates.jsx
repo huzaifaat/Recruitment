@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { CheckCircle, User, MoreVertical, ArrowUp, ArrowDown, Mail, Phone, Clock } from 'lucide-react';
+import { CheckCircle, User, MoreVertical, ArrowUp, ArrowDown, Mail, Phone, Clock, Send } from 'lucide-react';
+import EmailSender from '../email/EmailSender';
 
 const ShortlistedCandidates = () => {
   const [sortField, setSortField] = useState('matchScore');
   const [sortDirection, setSortDirection] = useState('desc');
-  
-  // Sample shortlisted candidates data
-  const shortlistedCandidates = [
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [candidates, setCandidates] = useState([
     {
       id: '1-3',
       name: 'Hamza Khan',
+      email: 'hamza.khan@gmail.com',
       education: 'MS Computer Science, LUMS',
       experience: '6 years',
       location: 'Lahore',
@@ -22,11 +24,13 @@ const ShortlistedCandidates = () => {
         maximum: 180000
       },
       notes: 'Excellent cultural fit. Worked with similar tech stack before.',
-      selected: true
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-7',
       name: 'Sara Ahmed',
+      email: 'sara.ahmed@outlook.com',
       education: 'BS Computer Science, FAST',
       experience: '5 years',
       location: 'Karachi',
@@ -39,11 +43,51 @@ const ShortlistedCandidates = () => {
         maximum: 170000
       },
       notes: 'Strong portfolio. Previously worked at a fintech startup.',
-      selected: true
+      selected: true,
+      emailSent: false
+    },
+    {
+      id: '1-1',
+      name: 'Waqar Qureshi',
+      email: 'waqarqureshi94@gmail.com',
+      education: 'MS Computer Science, LUMS',
+      experience: '4 years',
+      location: 'Islamabad',
+      skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Redux'],
+      matchScore: 95,
+      platform: 'LinkedIn',
+      availability: '1 month',
+      salary: {
+        minimum: 120000,
+        maximum: 150000
+      },
+      notes: 'Strong candidate with excellent skills. Good cultural fit.',
+      selected: true,
+      emailSent: false
+    },
+    {
+      id: '1-2',
+      name: 'Sadia Nasir',
+      email: 'Sadia.nasir98@gmail.com',
+      education: 'BS Computer Science, LSE',
+      experience: '3 years',
+      location: 'Lahore',
+      skills: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Redux'],
+      matchScore: 92,
+      platform: 'Rozee.pk',
+      availability: '2 weeks',
+      salary: {
+        minimum: 100000,
+        maximum: 130000
+      },
+      notes: 'Strong frontend skills. Quick learner.',
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-12',
       name: 'Ali Hassan',
+      email: 'ali.hassan@gmail.com',
       education: 'MS Computer Science, NUST',
       experience: '4 years',
       location: 'Islamabad',
@@ -56,11 +100,13 @@ const ShortlistedCandidates = () => {
         maximum: 160000
       },
       notes: 'Great communication skills. Experienced with test-driven development.',
-      selected: true
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-18',
       name: 'Fatima Malik',
+      email: 'fatima.malik@gmail.com',
       education: 'BS Computer Science, IBA',
       experience: '3 years',
       location: 'Lahore',
@@ -73,11 +119,13 @@ const ShortlistedCandidates = () => {
         maximum: 150000
       },
       notes: 'Skilled in frontend development. Good eye for design.',
-      selected: true
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-24',
       name: 'Usman Ali',
+      email: 'usman.ali@hotmail.com',
       education: 'BS Software Engineering, UET',
       experience: '7 years',
       location: 'Remote',
@@ -90,11 +138,13 @@ const ShortlistedCandidates = () => {
         maximum: 190000
       },
       notes: 'Extensive experience with modern frontend frameworks. Strong problem-solving skills.',
-      selected: true
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-29',
       name: 'Ayesha Khan',
+      email: 'ayesha.khan@gmail.com',
       education: 'MS Computer Science, COMSATS',
       experience: '4 years',
       location: 'Islamabad',
@@ -107,11 +157,13 @@ const ShortlistedCandidates = () => {
         maximum: 155000
       },
       notes: 'Quick learner. Good team player.',
-      selected: true
+      selected: true,
+      emailSent: false
     },
     {
       id: '1-35',
       name: 'Zain Ahmed',
+      email: 'zain.ahmed@yahoo.com',
       education: 'BS Computer Science, FAST',
       experience: '5 years',
       location: 'Karachi',
@@ -124,12 +176,13 @@ const ShortlistedCandidates = () => {
         maximum: 165000
       },
       notes: 'Full-stack developer. Experienced with MERN stack.',
-      selected: true
+      selected: true,
+      emailSent: false
     }
-  ];
+  ]);
   
   // Sort the candidates
-  const sortedCandidates = [...shortlistedCandidates].sort((a, b) => {
+  const sortedCandidates = [...candidates].sort((a, b) => {
     if (sortField === 'matchScore') {
       return sortDirection === 'desc' ? b.matchScore - a.matchScore : a.matchScore - b.matchScore;
     }
@@ -158,6 +211,31 @@ const ShortlistedCandidates = () => {
       setSortDirection('desc');
     }
   };
+
+  // Handle email send
+  const handleSendEmail = (candidate) => {
+    setSelectedCandidate(candidate);
+    setShowEmailModal(true);
+  };
+
+  // Handle email send success
+  const handleEmailSendSuccess = (candidateId) => {
+    const updatedCandidates = candidates.map(c => 
+      c.id === candidateId ? { ...c, emailSent: true } : c
+    );
+    setCandidates(updatedCandidates);
+  };
+  
+  // Get email sent count
+  const getEmailSentCount = () => {
+    return candidates.filter(c => c.emailSent).length;
+  };
+
+  // Send emails to all candidates
+  const handleSendAllEmails = () => {
+    // In a real application, you would implement batch email sending
+    alert('This would send emails to all candidates - implement batch email sending');
+  };
   
   return (
     <div className="bg-white rounded-lg shadow">
@@ -165,15 +243,19 @@ const ShortlistedCandidates = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-800">Final Shortlisted Candidates</h2>
           <div className="flex space-x-2">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-              Send to Client
+            <button 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center"
+              onClick={handleSendAllEmails}
+            >
+              <Send className="mr-2 h-4 w-4" />
+              Send All Invites ({getEmailSentCount()}/{candidates.length})
             </button>
             <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50">
               Export
             </button>
           </div>
         </div>
-        <p className="mt-1 text-gray-600">7 candidates for Senior Frontend Developer position at TechCorp</p>
+        <p className="mt-1 text-gray-600">{candidates.length} candidates for Senior Frontend Developer position at TechCorp</p>
       </div>
       
       <div className="overflow-x-auto">
@@ -244,7 +326,11 @@ const ShortlistedCandidates = () => {
                         {candidate.selected && (
                           <CheckCircle className="ml-1 h-4 w-4 text-green-500" />
                         )}
+                        {candidate.emailSent && (
+                          <Mail className="ml-1 h-4 w-4 text-blue-500" />
+                        )}
                       </div>
+                      <div className="text-sm text-gray-500">{candidate.email}</div>
                       <div className="text-sm text-gray-500">{candidate.education}</div>
                       <div className="text-sm text-gray-500">{candidate.location}</div>
                     </div>
@@ -286,13 +372,17 @@ const ShortlistedCandidates = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">
-                    <button className="p-1 text-blue-600 hover:text-blue-900">
+                    <button 
+                      className={`p-1 ${candidate.emailSent ? 'text-green-600' : 'text-blue-600 hover:text-blue-900'}`}
+                      onClick={() => handleSendEmail(candidate)}
+                      title={candidate.emailSent ? "Email already sent" : "Send interview invitation"}
+                    >
                       <Mail className="h-4 w-4" />
                     </button>
-                    <button className="p-1 text-blue-600 hover:text-blue-900">
+                    <button className="p-1 text-blue-600 hover:text-blue-900" title="Call candidate">
                       <Phone className="h-4 w-4" />
                     </button>
-                    <button className="p-1 text-gray-500 hover:text-gray-700">
+                    <button className="p-1 text-gray-500 hover:text-gray-700" title="More options">
                       <MoreVertical className="h-4 w-4" />
                     </button>
                   </div>
@@ -305,12 +395,21 @@ const ShortlistedCandidates = () => {
       
       <div className="px-6 py-4 border-t">
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600">Showing 7 of 7 shortlisted candidates</div>
+          <div className="text-sm text-gray-600">Showing {candidates.length} of {candidates.length} shortlisted candidates</div>
           <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
             Send to Client
           </button>
         </div>
       </div>
+
+      {showEmailModal && selectedCandidate && (
+        <EmailSender 
+          candidate={selectedCandidate}
+          jobTitle="Senior Frontend Developer"
+          onClose={() => setShowEmailModal(false)}
+          onSendSuccess={handleEmailSendSuccess}
+        />
+      )}
     </div>
   );
 };
