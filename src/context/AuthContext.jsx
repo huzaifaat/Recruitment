@@ -3,6 +3,7 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
+import avatarImage from '../assets/images/logo.svg';
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       name: 'John Doe',
       email: email,
       role: 'Recruiter',
-      avatar: '/images/avatar.png',
+      avatar: avatarImage,
     };
     
     setUser(userData);
