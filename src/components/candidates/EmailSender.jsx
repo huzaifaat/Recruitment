@@ -12,7 +12,7 @@ export default function EmailSender({ candidate, jobTitle, onClose, onSendSucces
   
   // Email template with default values
   const [emailData, setEmailData] = useState({
-    from: 'huzaifaathar1@gmail.com',
+    from: 'mrcap945@gmail.com',
     to: candidate?.email || '',
     subject: `Interview Invitation from Increw`,
     body: `Dear ${candidate?.name},
