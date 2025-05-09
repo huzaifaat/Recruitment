@@ -55,10 +55,10 @@ export default function JobsOverview() {
               <div className="flex mt-2 justify-between">
                 <div className="flex space-x-4 text-sm">
                   <span className="text-gray-600">
-                    <strong className="text-gray-900">{job.candidates}</strong> candidates
+                    <strong className="text-gray-900">{20}</strong> candidates
                   </span>
                   <span className="text-gray-600">
-                    <strong className="text-gray-900">{job.shortlisted}</strong> shortlisted
+                    <strong className="text-gray-900">{6}</strong> shortlisted
                   </span>
                 </div>
                 <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
