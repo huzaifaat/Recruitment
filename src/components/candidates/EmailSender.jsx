@@ -19,7 +19,7 @@ export default function EmailSender({ candidate, jobTitle, onClose, onSendSucces
 
 Thank you for your interest in ${jobTitle} at Increw. We were impressed with your application and would like to invite you to an online interview.
 
-To make the process as smooth as possible, we'll be using our online interview platform, which you can access through this link: [Insert Link to Increw's Online Interview Platform Homepage].
+To make the process as smooth as possible, we'll be using our online interview platform, which you can access through this link: https://interview-recruitment.vercel.app/.
 
 Please use the platform to appear in an automated online interview at your convenience. Once you log in, you'll be able to start the interview which will take around 15 to 20 minutes. Please make sure to submit your interview in the next 24 hours.
 
