@@ -34,10 +34,10 @@ export default function DashboardStats() {
       });
       
       setChartData([
-        { name: 'Week 1', candidates: 45, shortlisted: 7 },
-        { name: 'Week 2', candidates: 38, shortlisted: 5 },
-        { name: 'Week 3', candidates: 27, shortlisted: 6 },
-        { name: 'Week 4', candidates: 40, shortlisted: 5 },
+        { name: 'Week 1', candidates: 120, shortlisted: 25 },
+        { name: 'Week 2', candidates: 140, shortlisted: 20 },
+        { name: 'Week 3', candidates: 130, shortlisted: 35 },
+        { name: 'Week 4', candidates: 140, shortlisted: 40 },
       ]);
     }, 1000);
   }, []);

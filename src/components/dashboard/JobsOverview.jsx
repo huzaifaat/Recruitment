@@ -36,7 +36,7 @@ export default function JobsOverview() {
   return (
     <Card>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Recent Jobs</h3>
+        <h3 className="text-lg font-semibold">Recent Jobs Added</h3>
         <Link href="/jobs" className="text-indigo-600 flex items-center text-sm hover:text-indigo-800">
           View all jobs <ArrowRight size={16} className="ml-1" />
         </Link>
