@@ -78,7 +78,7 @@ export default function CandidateList() {
     return candidates.filter(c => c.emailSent);
   };
   
-  const canGenerateReport = getSelectedCandidates().length >= 5;
+  const canGenerateReport = getSelectedCandidates().length >= 0;
   
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -151,6 +151,7 @@ export default function CandidateList() {
               disabled={!canGenerateReport}
               className="flex items-center"
             >
+              {console.log("get selected candidiates are",getSelectedCandidates )}
               Generate Report ({getSelectedCandidates().length})
             </Button>
           </div>
