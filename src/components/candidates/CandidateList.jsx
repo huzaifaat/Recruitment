@@ -78,7 +78,7 @@ export default function CandidateList() {
     return candidates.filter(c => c.emailSent);
   };
   
-  const canGenerateReport = getSelectedCandidates().length >= 0;
+  const canGenerateReport = getSelectedCandidates().length > 0;
   
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
